@@ -1,0 +1,17 @@
+/* [역할] 앱 전체에 적용되는 기본 스타일 초기화.
+   Vite가 기본으로 만들어주는 #root의 max-width/padding/text-align 때문에
+   화면 가운데 정렬이 미묘하게 안 맞는 문제가 있어서 전부 제거함 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
