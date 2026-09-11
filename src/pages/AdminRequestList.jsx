@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { getAdminRequests, approveRequest, rejectRequest, setRequestAmount } from "../api/admin";
 
-const statusLabel = { PENDING: "대기중", APPROVED: "승인됨", REJECTED: "거절됨" };
-const statusBadgeClass = { PENDING: "badge-warning", APPROVED: "badge-success", REJECTED: "badge-danger" };
+const statusLabel = { PENDING: "대기중", APPROVED: "승인됨", MATCHED: "매칭됨", REJECTED: "거절됨" };
+const statusBadgeClass = { PENDING: "badge-warning", APPROVED: "badge-success", MATCHED: "badge-success", REJECTED: "badge-danger" };
 
 export default function AdminRequestList() {
   const [requests, setRequests] = useState([]);
@@ -43,7 +43,7 @@ export default function AdminRequestList() {
     setSavingId(requestId);
     try {
       await setRequestAmount(requestId, amount);
-      // 저장 성공 후 입력창 값은 비워줌 (저장된 금액은 아래 price-box에 별도로 표시되므로)
+     
       setAmountInputs({ ...amountInputs, [requestId]: "" });
       fetchRequests();
     } catch (err) {
@@ -91,7 +91,7 @@ export default function AdminRequestList() {
         </div>
 
         <div className="tabs">
-          {["PENDING", "APPROVED", "REJECTED"].map((s) => (
+          {["PENDING", "APPROVED", "MATCHED", "REJECTED"].map((s) => (
             <button
               key={s}
               className={`tab-btn ${statusFilter === s ? "active" : ""}`}

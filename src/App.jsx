@@ -1,4 +1,4 @@
-import "./App.css"; // 전체 디자인 시스템 적용 — 이게 빠져있어서 지금까지 스타일이 하나도 안 먹었음
+import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
@@ -14,6 +14,7 @@ import HelperRequestList from "./pages/HelperRequestList";
 import MatchingDetail from "./pages/MatchingDetail";
 import MatchingList from "./pages/MatchingList";
 import PaymentReady from "./pages/PaymentReady";
+import PaymentApprove from "./pages/PaymentApprove";
 import PaymentDetail from "./pages/PaymentDetail";
 import AdminLogin from "./pages/AdminLogin";
 import AdminRequestList from "./pages/AdminRequestList";
@@ -40,6 +41,7 @@ function AppRoutes() {
       <Route path="/matchings" element={<PrivateRoute><MatchingList /></PrivateRoute>} />
       <Route path="/matchings/:id" element={<PrivateRoute><MatchingDetail /></PrivateRoute>} />
       <Route path="/payments/new/:matchingId" element={<PrivateRoute><PaymentReady /></PrivateRoute>} />
+      <Route path="/payments/approve" element={<PrivateRoute><PaymentApprove /></PrivateRoute>} />
       <Route path="/payments/:id" element={<PrivateRoute><PaymentDetail /></PrivateRoute>} />
       <Route path="/mypage" element={<PrivateRoute><MyPage /></PrivateRoute>} />
       <Route path="/admin/login" element={<AdminLogin />} />
