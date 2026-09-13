@@ -8,7 +8,6 @@ const PAGE_SIZE = 10;
 const DISMISS_KEY = "admin_dismissed_requests";
 const DISMISSIBLE_STATUSES = ["MATCHED", "REJECTED"];
 const AMOUNT_EDITABLE_STATUSES = ["PENDING", "APPROVED"];
-// 추가: 결제 금액 박스를 보여줄 상태. REJECTED는 제외
 const AMOUNT_BOX_VISIBLE_STATUSES = ["PENDING", "APPROVED", "MATCHED"];
 
 export default function AdminRequestList() {
@@ -225,8 +224,6 @@ export default function AdminRequestList() {
             )}
           </>
         )}
-
-        <p style={{ marginTop: 24 }}><a href="/">메인으로</a></p>
       </div>
     </div>
   );

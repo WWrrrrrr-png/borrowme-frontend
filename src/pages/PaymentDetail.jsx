@@ -24,7 +24,6 @@ export default function PaymentDetail() {
     fetchData();
   }, [id]);
 
-  // 추가: 뒤로가기/앞으로가기(POP)로 이 페이지에 도달했다면, 화면을 그리지 않고 바로 메인으로 보냄
   if (navType === "POP") {
     return <Navigate to="/" replace />;
   }

@@ -24,7 +24,6 @@ export default function AdminLogin() {
       const response = await loginAdmin({ email, password });
       const { token, id, name } = response.data.data;
       login(token, id, name, "ADMIN");
-      // 수정: replace 추가 -> /admin/login이 히스토리에서 /admin/requests로 대체됨
       navigate("/admin/requests", { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "로그인에 실패했습니다.");
