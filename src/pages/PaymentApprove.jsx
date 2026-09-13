@@ -2,15 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { approvePayment } from "../api/payment";
 
+const MIN_PROCESSING_MS = 1800; 
+const MIN_SUCCESS_MS = 1800;    
+
 export default function PaymentApprove() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [status, setStatus] = useState("processing"); 
+  const [status, setStatus] = useState("processing");
   const [error, setError] = useState("");
-  const hasRun = useRef(false); 
+  const hasRun = useRef(false);
 
   useEffect(() => {
-    if (hasRun.current) return; 
+    if (hasRun.current) return;
     hasRun.current = true;
 
     const paymentId = searchParams.get("paymentId");
@@ -22,15 +25,30 @@ export default function PaymentApprove() {
       return;
     }
 
+    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
     const doApprove = async () => {
+      const startedAt = Date.now(); 
+
       try {
         const response = await approvePayment(paymentId, pgToken);
         const payment = response.data.data;
+
+    
+        const elapsed = Date.now() - startedAt;
+        if (elapsed < MIN_PROCESSING_MS) {
+          await wait(MIN_PROCESSING_MS - elapsed);
+        }
+
         setStatus("success");
-        setTimeout(() => {
-          navigate(`/payments/${payment.id}`, { replace: true });
-        }, 1000);
+       
+        await wait(MIN_SUCCESS_MS);
+        navigate(`/payments/${payment.id}`, { replace: true });
       } catch (err) {
+        const elapsed = Date.now() - startedAt;
+        if (elapsed < MIN_PROCESSING_MS) {
+          await wait(MIN_PROCESSING_MS - elapsed);
+        }
         setStatus("fail");
         setError(err.response?.data?.message || "결제 승인에 실패했습니다.");
       }
@@ -42,7 +60,6 @@ export default function PaymentApprove() {
   return (
     <div className="page-center">
       <div className="form-card">
-        <h2 className="title">결제 승인</h2>
 
         {status === "processing" && (
           <p className="empty-text">결제를 승인하는 중입니다...</p>
@@ -60,6 +77,7 @@ export default function PaymentApprove() {
             <p className="footer-links"><Link to="/">메인으로</Link></p>
           </>
         )}
+
       </div>
     </div>
   );

@@ -1,8 +1,12 @@
 import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 export default function Main() {
   const { user, logout } = useAuth();
+
+  if (user?.role === "ADMIN") {
+    return <Navigate to="/admin/requests" replace />;
+  }
 
   return (
     <div className="page-center">
@@ -26,7 +30,7 @@ export default function Main() {
 
         <Link className="menu-item" to="/mypage" style={{ marginTop: 10, display: "block" }}>마이페이지</Link>
 
-        <button className="btn btn-secondary btn-full" onClick={logout}>로그아웃</button>
+        <button className="btn btn-secondary btn-full" onClick={() => logout("/login")}>로그아웃</button>
 
         <p className="footer-links">
           <Link to="/delete-account" className="link-muted">회원탈퇴</Link>

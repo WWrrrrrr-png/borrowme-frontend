@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { getApprovedRequests, acceptRequest } from "../api/helper";
+import { useAuth } from "../context/AuthContext";
 
 export default function HelperRequestList() {
+  const { logout } = useAuth(); 
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [acceptingId, setAcceptingId] = useState(null);
@@ -37,8 +39,12 @@ export default function HelperRequestList() {
   return (
     <div className="page-center">
       <div className="page-card">
-        <h2 className="title" style={{ textAlign: "left" }}>승인된 도움 요청</h2>
-        {error && <p className="error-text">{error}</p>}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <h2 className="title" style={{ textAlign: "left", marginBottom: 0 }}>승인된 도움 요청</h2>
+          <button className="btn btn-outline btn-sm" onClick={() => logout("/helper/login")}>로그아웃</button>
+        </div>
+
+        {error && <p className="error-text" style={{ marginTop: 12 }}>{error}</p>}
 
         {loading ? (
           <p className="empty-text">불러오는 중...</p>
@@ -55,7 +61,7 @@ export default function HelperRequestList() {
             </div>
           ))
         )}
-        <p style={{ marginTop: 16 }}><a href="/">메인으로</a></p>
+
       </div>
     </div>
   );

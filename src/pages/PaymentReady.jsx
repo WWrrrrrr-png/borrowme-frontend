@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigationType, Navigate, Link } from "react-router-dom";
 import { getMatchingDetail } from "../api/matching";
 import { getRequestDetail } from "../api/request";
 import { readyPayment } from "../api/payment";
 
 export default function PaymentReady() {
   const { matchingId } = useParams();
+  const navType = useNavigationType();
   const [amount, setAmount] = useState(null);
   const [loading, setLoading] = useState(true);
   const [paying, setPaying] = useState(false);
@@ -26,6 +27,11 @@ export default function PaymentReady() {
     };
     fetchAmount();
   }, [matchingId]);
+
+  // 추가: 뒤로가기/앞으로가기(POP)로 이 페이지에 도달했다면, 화면을 그리지 않고 바로 메인으로 보냄
+  if (navType === "POP") {
+    return <Navigate to="/" replace />;
+  }
 
   const handlePay = async () => {
     setError("");

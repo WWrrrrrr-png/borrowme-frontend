@@ -41,7 +41,7 @@ export default function HelperSignup() {
     try {
       await signupHelper(form);
       alert("헬퍼 회원가입이 완료되었습니다. 로그인해주세요.");
-      navigate("/helper/login");
+      navigate("/helper/login", { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "회원가입에 실패했습니다.");
     } finally {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate, Link } from "react-router-dom";
 import { loginUser } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 
@@ -8,8 +8,12 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const navigate = useNavigate();
+
+  if (user) {
+    return <Navigate to="/" replace />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +23,7 @@ export default function Login() {
       const response = await loginUser({ email, password });
       const { token, id, name } = response.data.data;
       login(token, id, name, "USER");
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "로그인에 실패했습니다.");
     } finally {
@@ -40,8 +44,8 @@ export default function Login() {
             {loading ? "로그인 중..." : "로그인"}
           </button>
         </form>
-        <p className="footer-links">계정이 없으신가요?<a href="/signup">회원가입</a></p>
-        <p className="footer-links">헬퍼이신가요?<a href="/helper/login">헬퍼 로그인</a></p>
+        <p className="footer-links">계정이 없으신가요?<Link to="/signup">회원가입</Link></p>
+        <p className="footer-links">헬퍼이신가요?<Link to="/helper/login">헬퍼 로그인</Link></p>
       </div>
     </div>
   );

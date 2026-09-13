@@ -69,7 +69,7 @@ export default function MatchingDetail() {
           </Link>
         )}
 
-        <p className="footer-links"><a href="/">메인으로</a></p>
+        <p className="footer-links"><Link to="/">메인으로</Link></p>
       </div>
     </div>
   );

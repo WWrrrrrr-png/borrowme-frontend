@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { deleteAccount, deleteHelperAccount } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 
@@ -8,7 +8,6 @@ export default function DeleteAccount() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,11 +15,13 @@ export default function DeleteAccount() {
     setError("");
     setLoading(true);
     try {
-      if (user?.role === "HELPER") await deleteHelperAccount(password);
+      const isHelper = user?.role === "HELPER";
+      if (isHelper) await deleteHelperAccount(password);
       else await deleteAccount(password);
+
       alert("회원탈퇴가 완료되었습니다.");
-      logout();
-      navigate("/login");
+
+      logout(isHelper ? "/helper/login" : "/login");
     } catch (err) {
       setError(err.response?.data?.message || "탈퇴에 실패했습니다.");
     } finally {
@@ -40,7 +41,7 @@ export default function DeleteAccount() {
             {loading ? "처리 중..." : "탈퇴하기"}
           </button>
         </form>
-        <p className="footer-links"><a href="/">취소하고 메인으로</a></p>
+        <p className="footer-links"><Link to="/">취소하고 메인으로</Link></p>
       </div>
     </div>
   );

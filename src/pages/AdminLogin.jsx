@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { loginAdmin } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 
@@ -8,8 +8,13 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { user, login } = useAuth();
   const navigate = useNavigate();
+
+
+  if (user && user.role === "ADMIN") {
+    return <Navigate to="/admin/requests" replace />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +24,8 @@ export default function AdminLogin() {
       const response = await loginAdmin({ email, password });
       const { token, id, name } = response.data.data;
       login(token, id, name, "ADMIN");
-      navigate("/admin/requests");
+      // 수정: replace 추가 -> /admin/login이 히스토리에서 /admin/requests로 대체됨
+      navigate("/admin/requests", { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || "로그인에 실패했습니다.");
     } finally {

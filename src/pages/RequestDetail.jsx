@@ -111,7 +111,7 @@ export default function RequestDetail() {
             )}
           </>
         )}
-        <p className="footer-links"><a href="/requests">목록으로</a></p>
+        <p className="footer-links"><Link to="/requests">목록으로</Link></p>
       </div>
     </div>
   );
